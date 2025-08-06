@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My To-Do List</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>📝 My To-Do List</h1>
+
+    <form class="task-form" action="/submit" method="post">
+        <input type="text" name="text" placeholder="Add a new task..." required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul class="task-list">
+        <li th:each="task, iterStat : ${tasks}" class="task-item">
+            <input type="checkbox" onchange="checkboxToggle(this)">
+            <span th:text="${task}">Placeholder</span>
+
+            <form th:action="@{/delete}" method="post" style="display: inline;">
+                <input type="hidden" name="index" th:value="${iterStat.index}">
+                <button type="submit" class="delete-button">🗑</button>
+            </form>
+        </li>
+
+    </ul>
+</div>
+
+<script>
+    function checkboxToggle(checkbox) {
+        const liElement = checkbox.closest("li");
+        if (checkbox.checked) {
+            liElement.classList.add("completed");
+        } else {
+            liElement.classList.remove("completed");
+        }
+    }
+</script>
+
+</body>
+</html>
